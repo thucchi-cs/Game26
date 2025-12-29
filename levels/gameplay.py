@@ -9,6 +9,7 @@ async def game():
     clock = pygame.time.Clock()
     run = True
     quit = False
+    g.on_screen.add(g.room1)
 
     # Game loop
     while run:
@@ -29,14 +30,13 @@ async def game():
                     quit = True
 
         # Draw
-        g.SCREEN.fill((255,255,0))
-        pygame.draw.rect(g.SCREEN, (150,75,0), g.backpack)
+        g.SCREEN.fill((255,255,255))
 
         g.on_screen.update()
         g.on_screen.draw(g.SCREEN)
         
-        g.collected.update()
-        g.collected.draw(g.SCREEN)
+        g.backpack.update()
+        g.backpack.draw(g.SCREEN)
 
         pygame.display.flip()
 

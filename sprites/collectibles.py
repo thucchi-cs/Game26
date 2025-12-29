@@ -12,7 +12,7 @@ class Collectible(pygame.sprite.Sprite):
         self.rect.centery = cy
         
         # Object's variables
-        self.name = "KeyTest"
+        self.name = None
         self.collected = False
     
     def update(self):
@@ -28,15 +28,15 @@ class Collectible(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (25,25))
         self.rect = self.image.get_rect()
         self.rect.center = Collectible.calc_pos()
-        self.rect.centerx += g.backpack.x
-        self.rect.centery += g.backpack.y
+        self.rect.centerx += g.bp_rect.x
+        self.rect.centery += g.bp_rect.y
         self.collected = True
         self.remove(g.on_screen)
-        self.add(g.collected)
+        self.add(g.backpack)
     
     def calc_pos():
-        total = g.collected.__len__()
-        x = g.backpack.width*(0.2 * (total%5)) + (g.backpack.width *0.1)
-        y = g.backpack.height*(0.5 * (total//5)) + (g.backpack.height * 0.25)
+        total = g.backpack.__len__() -1
+        x = g.bp_rect.width*(0.2 * (total%5)) + (g.bp_rect.width *0.1)
+        y = g.bp_rect.height*(0.5 * (total//5)) + (g.bp_rect.height * 0.25)
         return (x,y)
         
