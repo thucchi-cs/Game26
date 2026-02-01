@@ -9,7 +9,7 @@ async def game():
     clock = pygame.time.Clock()
     run = True
     quit = False
-    g.on_screen.add(g.room1)
+    g.on_screen.add(g.dining1)
 
     # Game loop
     while run:
@@ -28,6 +28,10 @@ async def game():
                 if event.key == pygame.K_q:
                     run = False
                     quit = True
+
+                # Debug position print
+                if event.key == pygame.K_SPACE:
+                    print(pygame.mouse.get_pos())
 
         # Draw
         g.SCREEN.fill((255,255,255))
