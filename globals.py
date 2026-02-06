@@ -19,22 +19,39 @@ FPS = 60
 # Static on screen objects
 bp_rect = pygame.rect.Rect(WIDTH-200,0,200,200)
 
+# States of game
+clue0 = False
+note_collected = False
+clue1 = False
+clue2 = False
+clue3 = False
+clue4 = False
+using = None
+
 # Objects
 backpack = pygame.sprite.Group(bg.Background("backpack.png", bp_rect.topleft))
 dining1 = pygame.sprite.Group()
 dining2 = pygame.sprite.Group()
 dining3 = pygame.sprite.Group()
 dining4 = pygame.sprite.Group()
+bathroom = pygame.sprite.Group()
 egg_plate = pygame.sprite.Group()
 egg_note = pygame.sprite.Group()
 
 # Dining1
 funky_dude = robot.Robot(589, 312, 617,337, "ronin/Funky Dude.png", dining1, dining4, newsize=3)
-dining1.add(bg.Background("cool dude .png", size=(1280,720)), funky_dude, scene_changer.Scene_changer(WIDTH//2, HEIGHT-30, "arrow.png", dining1, dining3, rot=180, size=(50,30)), scene_changer.Scene_changer(WIDTH-230, HEIGHT//2, "arrow.png", dining1, dining2, rot=270, size=(50,30)))
+door = object.Object(722, 271, "door.png", "door", size=(80, 119))
+frame2 = object.Object(1073,235, "ronin/painting dude.png", "inactive")
+tile = object.Object(830, 542, "tilered.png", "tile")
+dining1.add(bg.Background("cool dude .png", size=(1280,720)), funky_dude, frame2, door, tile, scene_changer.Scene_changer(WIDTH//2, HEIGHT-30, "arrow.png", dining1, dining3, rot=180, size=(50,30)), scene_changer.Scene_changer(WIDTH-230, HEIGHT//2, "arrow.png", dining1, dining2, rot=270, size=(50,30)))
 
 # Dining2
 frame = object.Object(334,262, "frame.png", "frame", rot=352, size=(350,250))
-dining2.add(bg.Background("yes ronin it is.png", size=(1280,720)), frame, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining2, dining1, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH - 230, HEIGHT//2, "arrow.png", dining2, dining3, rot=270, size=(50,30)))
+dining2.add(bg.Background("yes ronin it is.png", size=(1280,720)), frame, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining2, dining1, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH - 230, HEIGHT//2, "arrow.png", dining2, dining3, rot=270, size=(50,30)), scene_changer.Scene_changer(904, 650, "arrow.png", dining2, bathroom, size=(50,30)))
+
+# Bathroom
+hammer = collectibles.Collectible(968, 442, "hammer.png", "use")
+bathroom.add(bg.Background("dining3.png", size=(1280, 720)), hammer, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", bathroom, dining2, rot=180, size=(50,30)))
 
 # Dining 3
 mannequin = object.Object(770, 500, "ronin/shirt man 2.png", "mannequin", size=(280, 409))
@@ -44,7 +61,7 @@ dining3.add(bg.Background("room zoom.png", size=(1280,720)), mannequin, scene_ch
 eggbtn = object.Object(631, 591, "ronin/order eggs.png", "eggbtn", size=(121, 62))
 eggs = object.Object(WIDTH + 200, 486, "ronin/hres plat.png", "eggs", size=(200, 30))
 # eggs = scene_changer.Scene_changer(WIDTH + 200, 304, "plate.png", dining4, egg_plate)
-dining4.add(bg.Background("Funky Dude is Literally Me.png", size=(1280,720)), funky_dude, eggbtn, eggs, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining4, dining1, rot=180, size=(50,30)))
+dining4.add(bg.Background("Funky Dude is Literally Me.png", size=(1280,720)), funky_dude, eggs, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining4, dining1, rot=180, size=(50,30)))
 
 # Eggs screen
 plate = scene_changer.Scene_changer(753,358, "eggs.png", egg_plate, egg_note)

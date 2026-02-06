@@ -5,11 +5,12 @@ import time
 class Object(pygame.sprite.Sprite):
     def __init__(self, cx, cy, img, name, size=None, rot=0):
         super().__init__()
-        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs}
+        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile}
         animations = {"frame": self.animate_frame, "eggs":self.animate_eggs}
-        hover = {"frame": True}
+        hover = {"frame": True, "door": True, "tile": True}
 
         # Set up
+        self.pos = (cx,cy)
         self.image = pygame.image.load(f"assets/graphics/{img}")
         if size:
             self.image = pygame.transform.scale(self.image, size)
@@ -42,12 +43,12 @@ class Object(pygame.sprite.Sprite):
     def is_hovered(self):
         mouse = pygame.mouse.get_pos()
         if self.rect.collidepoint(mouse):
-            pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
             if (self.shake_count > -1):
                 self.shake_count += 1
         else:
+            if self.hover:
+                self.rect.center = self.pos
             self.shake_count = 0
-            pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
 
     def shake(self):
         self.rect.x += self.shake_dir
@@ -71,7 +72,13 @@ class Object(pygame.sprite.Sprite):
         pos = self.rect.center
         self.rect.center = (pos[0] - 30, pos[1] + 30)
         if self.rect.y > g.WIDTH:
+            g.clue0 = True
             self.animating = False
+            g.dining1.remove(g.frame2)
+            self.remove(g.dining2)
+            self.remove(g.on_screen)
+            g.clue0 = True
+            g.dining4.add(g.eggbtn)
 
     def animate_eggs(self):
         if self.rect.x <= 852:
@@ -88,3 +95,15 @@ class Object(pygame.sprite.Sprite):
 
     def order_eggs(self):
         g.eggs.start_eggs()
+
+    def break_tile(self):
+        if (self.counter == 0) and (g.using == g.hammer):
+            self.counter += 1
+            pos = self.rect.center
+            self.image = pygame.image.load(f"assets/graphics/tilebroken.png")
+            self.rect = self.image.get_rect()
+            self.rect.center = pos
+        elif self.counter == 1:
+            print("hey")
+            self.remove(g.dining1)
+            self.remove(g.on_screen)

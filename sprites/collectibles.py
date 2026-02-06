@@ -22,29 +22,36 @@ class Collectible(pygame.sprite.Sprite):
         self.name = None
         self.collected = False
 
-        if open_type == "open":
-            self.open = open
+        self.open = open_type
+        self.following = False
     
     def update(self):
         self.is_clicked()
+        if self.following:
+            self.follow()
 
     def is_clicked(self):
         mouse = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()[0]
         if clicked:
-            # print("Click")
             if self.collected:
-                print("o")
-                if not self.rect.collidepoint(mouse):
-                    self.collect()
-                    print("collect2")
-                else:
-                    self.pop_up()
-                    print("pop")
+                if self.open == "open":
+                    if not self.rect.collidepoint(mouse):
+                        self.collect()
+                    else:
+                        self.pop_up()
+                elif self.open == "use":
+                    if self.following:
+                        self.following = False
+                        self.collect()
+                        g.using = None
+                    if self.rect.collidepoint(mouse):
+                        self.pop_up()
+                        self.following = True
+                        g.using = self
             else:
                 if self.rect.collidepoint(mouse):
                     self.collect()
-                    print("collect1") 
     
     def collect(self):
         self.image = pygame.transform.scale(self.image, (25,25))
@@ -73,3 +80,7 @@ class Collectible(pygame.sprite.Sprite):
         self.remove(g.backpack)
         self.add(g.on_screen)
         time.sleep(0.15)
+
+    def follow(self):
+        mouse = pygame.mouse.get_pos()
+        self.rect.topleft = mouse
