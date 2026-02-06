@@ -5,7 +5,7 @@ import time
 class Object(pygame.sprite.Sprite):
     def __init__(self, cx, cy, img, name, size=None, rot=0):
         super().__init__()
-        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "eggs_plate": self.flip_eggs}
+        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs}
         animations = {"frame": self.animate_frame, "eggs":self.animate_eggs}
         hover = {"frame": True}
 
@@ -74,7 +74,7 @@ class Object(pygame.sprite.Sprite):
             self.animating = False
 
     def animate_eggs(self):
-        if self.rect.x <= 768:
+        if self.rect.x <= 852:
             self.animating = False
             return
         self.rect.x -= 8
@@ -84,12 +84,7 @@ class Object(pygame.sprite.Sprite):
         self.rect.x = 1183
 
     def close_eggs(self):
-        g.on_screen.remove(g.dining4)
-        g.on_screen.add(g.egg_plate)
-
-    def flip_eggs(self):
-        g.on_screen.remove(g.egg_plate)
-        g.on_screen.add(g.egg_note)
+        g.load_screen(g.dining4, g.egg_plate)
 
     def order_eggs(self):
         g.eggs.start_eggs()

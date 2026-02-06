@@ -10,6 +10,8 @@ async def game():
     run = True
     quit = False
     g.on_screen.add(g.dining1)
+    hovers = [i for i in g.on_screen.sprites() + g.backpack.sprites() if (type(i) in g.hover_types)]
+    g.hoverable.add(hovers)
 
     # Game loop
     while run:
@@ -41,6 +43,9 @@ async def game():
         
         g.backpack.update()
         g.backpack.draw(g.SCREEN)
+
+        # Hovering
+        g.is_hovering()
 
         pygame.display.flip()
 
