@@ -21,6 +21,8 @@ class Collectible(pygame.sprite.Sprite):
         # Object's variables
         self.name = None
         self.collected = False
+        self.counter = 0
+        self.bounce_dir = 1
 
         self.open = open_type
         self.following = False
@@ -29,6 +31,8 @@ class Collectible(pygame.sprite.Sprite):
         self.is_clicked()
         if self.following:
             self.follow()
+        if self.open == "give" and not g.backpack.has(self):
+            self.bouce()
 
     def is_clicked(self):
         mouse = pygame.mouse.get_pos()
@@ -36,10 +40,10 @@ class Collectible(pygame.sprite.Sprite):
         if clicked:
             if self.collected:
                 if self.open == "open":
-                    if not self.rect.collidepoint(mouse):
-                        self.collect()
-                    else:
+                    if self.rect.collidepoint(mouse) and g.backpack.has(self):
                         self.pop_up()
+                    else:
+                        self.collect()
                 elif self.open == "use":
                     if self.following:
                         self.following = False
@@ -84,3 +88,9 @@ class Collectible(pygame.sprite.Sprite):
     def follow(self):
         mouse = pygame.mouse.get_pos()
         self.rect.topleft = mouse
+
+    def bouce(self):
+        self.rect.y += self.bounce_dir
+        if self.counter % 10 == 0:
+            self.bounce_dir *= -1
+        self.counter += 1

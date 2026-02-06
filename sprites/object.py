@@ -5,7 +5,7 @@ import time
 class Object(pygame.sprite.Sprite):
     def __init__(self, cx, cy, img, name, size=None, rot=0):
         super().__init__()
-        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile, "man": self.undress}
+        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile, "man": self.undress, "toilet": self.uncover}
         animations = {"frame": self.animate_frame, "eggs":self.animate_eggs}
         hover = {"frame": True, "door": True, "tile": True}
 
@@ -110,11 +110,26 @@ class Object(pygame.sprite.Sprite):
             print("hey")
             self.remove(g.dining1)
             self.remove(g.on_screen)
+            g.coin2.add(g.dining1, g.on_screen)
+            self.counter += 1
+            g.clue2 = True
 
     def undress(self):
-        if g.note_collected:
+        if g.note_collected and not g.clue3:
             self.image = pygame.image.load(f"assets/graphics/ronin/man.png")
-        if self.size:
-            self.image = pygame.transform.scale(self.image, self.size)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
+            if self.size:
+                self.image = pygame.transform.scale(self.image, self.size)
+            self.rect = self.image.get_rect()
+            self.rect.center = self.pos
+            g.clue3 = True
+            g.coin3.add(g.dining1, g.on_screen)
+
+    def uncover(self):
+        if not g.clue1:
+            self.image = pygame.image.load(f"assets/graphics/ronin/ToiletUncovered.png")
+            if self.size:
+                self.image = pygame.transform.scale(self.image, self.size)
+            self.rect = self.image.get_rect()
+            self.rect.center = self.pos
+            g.clue1 = True
+            g.coin1.add(g.bathroom, g.on_screen)
