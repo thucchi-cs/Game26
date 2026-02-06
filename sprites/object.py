@@ -5,13 +5,14 @@ import time
 class Object(pygame.sprite.Sprite):
     def __init__(self, cx, cy, img, name, size=None, rot=0):
         super().__init__()
-        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile}
+        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile, "man": self.undress}
         animations = {"frame": self.animate_frame, "eggs":self.animate_eggs}
         hover = {"frame": True, "door": True, "tile": True}
 
         # Set up
         self.pos = (cx,cy)
         self.image = pygame.image.load(f"assets/graphics/{img}")
+        self.size = size
         if size:
             self.image = pygame.transform.scale(self.image, size)
         self.rot = rot
@@ -92,6 +93,8 @@ class Object(pygame.sprite.Sprite):
 
     def close_eggs(self):
         g.load_screen(g.dining4, g.egg_plate)
+        g.note_collected = True
+        g.dining2.add(g.scene_changer.Scene_changer(904, 650, "arrow.png", g.dining2, g.bathroom, size=(50,30)))
 
     def order_eggs(self):
         g.eggs.start_eggs()
@@ -107,3 +110,11 @@ class Object(pygame.sprite.Sprite):
             print("hey")
             self.remove(g.dining1)
             self.remove(g.on_screen)
+
+    def undress(self):
+        if g.note_collected:
+            self.image = pygame.image.load(f"assets/graphics/ronin/man.png")
+        if self.size:
+            self.image = pygame.transform.scale(self.image, self.size)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos

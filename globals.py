@@ -47,14 +47,14 @@ dining1.add(bg.Background("cool dude .png", size=(1280,720)), funky_dude, frame2
 
 # Dining2
 frame = object.Object(334,262, "frame.png", "frame", rot=352, size=(350,250))
-dining2.add(bg.Background("yes ronin it is.png", size=(1280,720)), frame, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining2, dining1, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH - 230, HEIGHT//2, "arrow.png", dining2, dining3, rot=270, size=(50,30)), scene_changer.Scene_changer(904, 650, "arrow.png", dining2, bathroom, size=(50,30)))
+dining2.add(bg.Background("yes ronin it is.png", size=(1280,720)), frame, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining2, dining1, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH - 230, HEIGHT//2, "arrow.png", dining2, dining3, rot=270, size=(50,30)))
 
 # Bathroom
 hammer = collectibles.Collectible(968, 442, "hammer.png", "use")
 bathroom.add(bg.Background("dining3.png", size=(1280, 720)), hammer, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", bathroom, dining2, rot=180, size=(50,30)))
 
 # Dining 3
-mannequin = object.Object(770, 500, "ronin/shirt man 2.png", "mannequin", size=(280, 409))
+mannequin = object.Object(780, 500, "ronin/shirt man.png", "man", size=(215, 409))
 dining3.add(bg.Background("room zoom.png", size=(1280,720)), mannequin, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining3, dining2, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining3, dining1, rot=180, size=(50,30)))
 
 # Dining 4
