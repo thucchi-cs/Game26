@@ -9,7 +9,7 @@ async def game():
     clock = pygame.time.Clock()
     run = True
     quit = False
-    g.on_screen.add(g.dining1)
+    g.on_screen.add(g.start)
     hovers = [i for i in g.on_screen.sprites() + g.backpack.sprites() if (type(i) in g.hover_types)]
     g.hoverable.add(hovers)
 

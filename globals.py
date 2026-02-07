@@ -28,9 +28,11 @@ clue2 = False
 clue3 = False
 clue4 = False
 using = None
+coins = 0
 
 # Objects
-backpack = pygame.sprite.Group(bg.Background("backpack.png", bp_rect.topleft))
+backpack = pygame.sprite.Group(bg.Background("gfdfgk.png", bp_rect.topleft))
+start = pygame.sprite.Group()
 dining1 = pygame.sprite.Group()
 dining2 = pygame.sprite.Group()
 dining3 = pygame.sprite.Group()
@@ -39,12 +41,7 @@ bathroom = pygame.sprite.Group()
 egg_plate = pygame.sprite.Group()
 egg_note = pygame.sprite.Group()
 micro_screen = pygame.sprite.Group()
-
-# Coins
-coin1 = collectibles.Collectible(529, 351, "ronin/coin.png", "give", size=(30,30))
-coin2 = collectibles.Collectible(823, 544, "ronin/coin.png", "give", size=(30,30))
-coin3 = collectibles.Collectible(781, 391, "ronin/coin.png", "give", size=(30,30))
-coin4 = collectibles.Collectible(509, 480, "ronin/coin.png", "give", size=(60,60))
+robot_collect = pygame.sprite.Group()
 
 # Dining1
 funky_dude = robot.Robot(589, 312, 390, 290, "ronin/Funky Dude.png", dining1, dining4, size=0.25, newsize=1)
@@ -53,13 +50,24 @@ frame2 = object.Object(1110,283, "ronin/painting dude.png", "inactive")
 tile = object.Object(830, 542, "tilered.png", "tile")
 dining1.add(bg.Background("cool dude .png", size=(1280,720)), funky_dude, frame2, door, tile, scene_changer.Scene_changer(WIDTH//2, HEIGHT-30, "arrow.png", dining1, dining3, rot=180, size=(50,30)), scene_changer.Scene_changer(WIDTH-230, HEIGHT//2, "arrow.png", dining1, dining2, rot=270, size=(50,30)))
 
+
+# Coins
+coin1 = collectibles.Collectible(529, 351, "ronin/coin.png", "give", bathroom, size=(30,30))
+coin2 = collectibles.Collectible(823, 544, "ronin/coin.png", "give", dining1, size=(30,30))
+coin3 = collectibles.Collectible(781, 391, "ronin/coin.png", "give", dining3, size=(30,30))
+coin4 = collectibles.Collectible(509, 480, "ronin/coin.png", "give", micro_screen, size=(30,30))
+coin1.set_target(funky_dude, robot_collect, dining4)
+coin3.set_target(funky_dude, robot_collect, dining4)
+coin4.set_target(funky_dude, robot_collect, dining4)
+coin2.set_target(funky_dude, robot_collect, dining4)
+
 # Dining2
 frame = object.Object(334,262, "frame.png", "frame", rot=352, size=(350,250))
 dining2.add(bg.Background("yes ronin it is.png", size=(1280,720)), frame, scene_changer.Scene_changer(30, HEIGHT//2, "arrow.png", dining2, dining1, rot=90, size=(50,30)), scene_changer.Scene_changer(WIDTH - 230, HEIGHT//2, "arrow.png", dining2, dining3, rot=270, size=(50,30)))
 
 # Bathroom
 toilet = object.Object(486, 500, "ronin/ToiletNormal.png", "toilet")
-hammer = collectibles.Collectible(876, 542, "ronin/Sledgehammer.png", "use")
+hammer = collectibles.Collectible(876, 542, "ronin/Sledgehammer.png", "use", bathroom)
 bathroom.add(bg.Background("Batjroom.png", size=(1280, 720)), hammer, toilet, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", bathroom, dining2, rot=180, size=(50,30)))
 
 # Dining 3
@@ -71,7 +79,8 @@ eggbtn = object.Object(631, 591, "ronin/order eggs.png", "eggbtn", size=(242, 12
 eggs = object.Object(WIDTH + 200, 486, "ronin/hres plat.png", "eggs", size=(200, 30))
 # eggs = scene_changer.Scene_changer(WIDTH + 200, 304, "plate.png", dining4, egg_plate)
 microwave = scene_changer.Scene_changer(680, 407, "ronin/eaking.png", dining4, micro_screen, size=(230,120))
-dining4.add(bg.Background("sa.png", size=(1280,720)), microwave, funky_dude, eggs, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining4, dining1, rot=180, size=(50,30)))
+key = collectibles.Collectible(571, 312, "key.png", "use", dining4, size=(100,100), rot=270)
+dining4.add(bg.Background("sa.png", size=(1280,720)), microwave, funky_dude, eggs, robot_collect, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining4, dining1, rot=180, size=(50,30)))
 
 # Microwave screen
 display = pygame.sprite.Group(bg.Background("microdisplay.png", size=(211,33), coor=(928,198)))
@@ -93,8 +102,16 @@ plate = scene_changer.Scene_changer(753,358, "ronin/ahahahahahahahahaahahahahaha
 egg_plate.add(bg.Background("4 CLUE.png", size=(1280, 720)), plate, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", egg_plate, dining1, rot=180, size=(50,30)))
 
 # Flipped Eggs screen
-note = collectibles.Collectible(786, 366, "ronin/weojfewofjewf.png", "open", size=(350, 450), rot=0)
+note = collectibles.Collectible(786, 366, "ronin/weojfewofjewf.png", "open", egg_note, size=(350, 450), rot=0)
 egg_note.add(bg.Background("Empty Plage.png", size=(1280, 720)), note, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", egg_note, dining1, rot=180, size=(50,30)))
+
+# End screen
+end = pygame.sprite.Group(bg.Background("u did it.png", size=(1280,720)))
+
+# Beginning screen
+start.add(bg.Background("escape.png", size=(1280,720)), scene_changer.Scene_changer(300, 506, "ronin/start button.png", start, dining1, size=(500,100)))
+
+# General
 on_screen = pygame.sprite.Group()
 hoverable = pygame.sprite.Group()
 hover_types = [object.Object, collectibles.Collectible, scene_changer.Scene_changer, robot.Robot, btn.Button]
@@ -113,3 +130,7 @@ def is_hovering():
             pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
             return
     pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
+
+def check_coins():
+    if coins == 4:
+        key.add(dining4, on_screen)

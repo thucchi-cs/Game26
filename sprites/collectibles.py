@@ -3,7 +3,7 @@ import pygame
 import globals as g
 
 class Collectible(pygame.sprite.Sprite):
-    def __init__(self, cx, cy, img, open_type, size=None, rot=0):
+    def __init__(self, cx, cy, img, open_type, screen, size=None, rot=0):
         super().__init__()
         # Set up
         self.img = img
@@ -24,15 +24,18 @@ class Collectible(pygame.sprite.Sprite):
         self.counter = 0
         self.bounce_dir = 1
         self.bp_pos = None
+        self.screen = screen
 
         self.open = open_type
         self.following = False
+        self.target = None
+        self.target_group = None
     
     def update(self):
         self.is_clicked()
         if self.following:
             self.follow()
-        if self.open == "give" and not g.backpack.has(self):
+        if self.open == "give" and not g.backpack.has(self) and not self.collected:
             self.bouce()
 
     def is_clicked(self):
@@ -45,11 +48,15 @@ class Collectible(pygame.sprite.Sprite):
                         self.pop_up()
                     else:
                         self.collect()
-                elif self.open == "use":
+                elif self.open == "use" or self.open == "give":
                     if self.following:
                         self.following = False
-                        self.collect()
                         g.using = None
+                        if self.open == "use":
+                            self.collect()
+                        else:
+                            self.give()
+                            return
                     if self.rect.collidepoint(mouse):
                         self.pop_up()
                         self.following = True
@@ -69,7 +76,8 @@ class Collectible(pygame.sprite.Sprite):
         else:
             self.rect.center = self.bp_pos
         self.collected = True
-        self.remove(g.on_screen)
+        # self.remove(g.on_screen, self.screen)
+        self.kill()
         self.add(g.backpack)
         time.sleep(0.15)
     
@@ -99,3 +107,21 @@ class Collectible(pygame.sprite.Sprite):
         if self.counter % 10 == 0:
             self.bounce_dir *= -1
         self.counter += 1
+
+    def set_target(self, target, group, screen):
+        self.target = target
+        self.target_screen = screen
+        self.target_group = group
+
+    def give(self):
+        if g.on_screen.has(self.target_screen):
+            if pygame.sprite.collide_mask(self, self.target):
+                self.add(self.target_screen)
+                self.add(g.on_screen)
+                print(self.groups())
+                self.rect.centerx = 410 + g.coins * 15
+                g.coins += 1
+                self.rect.centery = 375
+                g.check_coins()
+                return
+        self.collect()

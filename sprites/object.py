@@ -5,7 +5,7 @@ import time
 class Object(pygame.sprite.Sprite):
     def __init__(self, cx, cy, img, name, size=None, rot=0):
         super().__init__()
-        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile, "man": self.undress, "toilet": self.uncover}
+        interactions = {"frame": self.animate_on, "eggbtn": self.order_eggs, "eggs": self.close_eggs, "tile": self.break_tile, "man": self.undress, "toilet": self.uncover, "door": self.open_door}
         animations = {"frame": self.animate_frame, "eggs":self.animate_eggs}
         hover = {"frame": True, "door": True, "tile": True}
 
@@ -98,6 +98,7 @@ class Object(pygame.sprite.Sprite):
 
     def order_eggs(self):
         g.eggs.start_eggs()
+        self.remove(g.dining4)
 
     def break_tile(self):
         if (self.counter == 0) and (g.using == g.hammer):
@@ -107,12 +108,15 @@ class Object(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.center = pos
         elif self.counter == 1:
-            print("hey")
             self.remove(g.dining1)
             self.remove(g.on_screen)
             g.coin2.add(g.dining1, g.on_screen)
             self.counter += 1
             g.clue2 = True
+
+    def open_door(self):
+        if g.using == g.key:
+            g.load_screen(g.dining1, g.end)
 
     def undress(self):
         if g.note_collected and not g.clue3:

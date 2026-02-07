@@ -41,7 +41,7 @@ class Robot(pygame.sprite.Sprite):
     def is_clicked(self):
         mouse = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()[0]
-        if clicked and self.rect.collidepoint(mouse):
+        if clicked and self.rect.collidepoint(mouse) and g.on_screen.has(self.room):
             self.close_up()
         
     def close_up(self):
