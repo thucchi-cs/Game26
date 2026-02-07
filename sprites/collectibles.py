@@ -63,6 +63,7 @@ class Collectible(pygame.sprite.Sprite):
                         g.using = self
             else:
                 if self.rect.collidepoint(mouse):
+                    g.collect.play()
                     self.collect()
     
     def collect(self):
@@ -118,7 +119,6 @@ class Collectible(pygame.sprite.Sprite):
             if pygame.sprite.collide_mask(self, self.target):
                 self.add(self.target_screen)
                 self.add(g.on_screen)
-                print(self.groups())
                 self.rect.centerx = 410 + g.coins * 15
                 g.coins += 1
                 self.rect.centery = 375

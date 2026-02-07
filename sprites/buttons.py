@@ -33,6 +33,7 @@ class Button(pygame.sprite.Sprite):
         mouse = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()[0]
         if clicked and self.rect.collidepoint(mouse):
+            g.btn_sound.play()
             if self.bs:
                 Button.delete()
                 time.sleep(0.25)

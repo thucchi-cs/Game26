@@ -68,6 +68,7 @@ class Object(pygame.sprite.Sprite):
 
     def animate_on(self):
         self.animating = True
+        g.frame_break.play()
 
     def animate_frame(self):
         pos = self.rect.center
@@ -97,8 +98,10 @@ class Object(pygame.sprite.Sprite):
         g.dining2.add(g.scene_changer.Scene_changer(904, 650, "arrow.png", g.dining2, g.bathroom, size=(50,30)))
 
     def order_eggs(self):
+        print("what")
         g.eggs.start_eggs()
         self.remove(g.dining4)
+        g.beepboop.play()
 
     def break_tile(self):
         if (self.counter == 0) and (g.using == g.hammer):
@@ -107,6 +110,7 @@ class Object(pygame.sprite.Sprite):
             self.image = pygame.image.load(f"assets/graphics/tilebroken.png")
             self.rect = self.image.get_rect()
             self.rect.center = pos
+            g.smash.play()
         elif self.counter == 1:
             self.remove(g.dining1)
             self.remove(g.on_screen)
@@ -116,6 +120,8 @@ class Object(pygame.sprite.Sprite):
 
     def open_door(self):
         if g.using == g.key:
+            g.win.play()
+            time.sleep(0.5)
             g.load_screen(g.dining1, g.end)
 
     def undress(self):

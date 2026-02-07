@@ -5,9 +5,11 @@ import sprites.scene_changer as scene_changer
 import sprites.object as object
 import sprites.robot as robot
 import sprites.buttons as btn
+import music
 
 # Pygame inits
 pygame.init()
+pygame.mixer.init()
 
 # Set up screen
 WIDTH = 1480
@@ -29,6 +31,15 @@ clue3 = False
 clue4 = False
 using = None
 coins = 0
+
+# Music / sounds
+game_music = music.Music("soundtrack.mp3")
+frame_break = pygame.mixer.Sound("assets/sounds/glass.ogg")
+beepboop = pygame.mixer.Sound("assets/sounds/beep boop.ogg")
+collect = pygame.mixer.Sound("assets/sounds/collect.ogg")
+smash = pygame.mixer.Sound("assets/sounds/smash.ogg")
+btn_sound = pygame.mixer.Sound("assets/sounds/poop.ogg")
+win = pygame.mixer.Sound("assets/sounds/win.ogg")
 
 # Objects
 backpack = pygame.sprite.Group(bg.Background("gfdfgk.png", bp_rect.topleft))
