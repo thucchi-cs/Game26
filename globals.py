@@ -90,7 +90,7 @@ eggbtn = object.Object(631, 591, "ronin/order eggs.png", "eggbtn", size=(242, 12
 eggs = object.Object(WIDTH + 200, 486, "ronin/hres plat.png", "eggs", size=(200, 30))
 # eggs = scene_changer.Scene_changer(WIDTH + 200, 304, "plate.png", dining4, egg_plate)
 microwave = scene_changer.Scene_changer(680, 407, "ronin/eaking.png", dining4, micro_screen, size=(230,120))
-key = collectibles.Collectible(571, 312, "key.png", "use", dining4, size=(100,100), rot=270)
+key = collectibles.Collectible(571, 312, "key.png", "use", dining4, size=(100,100), rot=270, key=True)
 dining4.add(bg.Background("sa.png", size=(1280,720)), microwave, funky_dude, eggs, robot_collect, scene_changer.Scene_changer(WIDTH//2, HEIGHT - 30, "arrow.png", dining4, dining1, rot=180, size=(50,30)))
 
 # Microwave screen

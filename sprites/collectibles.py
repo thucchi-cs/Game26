@@ -3,7 +3,7 @@ import pygame
 import globals as g
 
 class Collectible(pygame.sprite.Sprite):
-    def __init__(self, cx, cy, img, open_type, screen, size=None, rot=0):
+    def __init__(self, cx, cy, img, open_type, screen, size=None, rot=0, key=False):
         super().__init__()
         # Set up
         self.img = img
@@ -25,6 +25,7 @@ class Collectible(pygame.sprite.Sprite):
         self.bounce_dir = 1
         self.bp_pos = None
         self.screen = screen
+        self.key = key
 
         self.open = open_type
         self.following = False
@@ -70,7 +71,7 @@ class Collectible(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (25,25))
         self.rect = self.image.get_rect()
         if not self.bp_pos:
-            self.rect.center = Collectible.calc_pos()
+            self.rect.center = Collectible.calc_pos() if not self.key else (60,150)
             self.rect.centerx += g.bp_rect.x
             self.rect.centery += g.bp_rect.y
             self.bp_pos = self.rect.center
@@ -86,6 +87,7 @@ class Collectible(pygame.sprite.Sprite):
         total = g.backpack.__len__() -1
         x = g.bp_rect.width*(0.2 * (total%5)) + (g.bp_rect.width *0.1)
         y = g.bp_rect.height*(0.5 * (total//5)) + (g.bp_rect.height * 0.25)
+        print(x,y)
         return (x,y)
         
     def pop_up(self):
