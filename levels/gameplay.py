@@ -38,8 +38,8 @@ async def game():
         # Draw
         g.SCREEN.fill((255,255,255))
 
-        g.on_screen.update()
         g.on_screen.draw(g.SCREEN)
+        g.on_screen.update()
         
         g.backpack.update()
         g.backpack.draw(g.SCREEN)

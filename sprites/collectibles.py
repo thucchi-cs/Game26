@@ -23,6 +23,7 @@ class Collectible(pygame.sprite.Sprite):
         self.collected = False
         self.counter = 0
         self.bounce_dir = 1
+        self.bp_pos = None
 
         self.open = open_type
         self.following = False
@@ -60,9 +61,13 @@ class Collectible(pygame.sprite.Sprite):
     def collect(self):
         self.image = pygame.transform.scale(self.image, (25,25))
         self.rect = self.image.get_rect()
-        self.rect.center = Collectible.calc_pos()
-        self.rect.centerx += g.bp_rect.x
-        self.rect.centery += g.bp_rect.y
+        if not self.bp_pos:
+            self.rect.center = Collectible.calc_pos()
+            self.rect.centerx += g.bp_rect.x
+            self.rect.centery += g.bp_rect.y
+            self.bp_pos = self.rect.center
+        else:
+            self.rect.center = self.bp_pos
         self.collected = True
         self.remove(g.on_screen)
         self.add(g.backpack)
